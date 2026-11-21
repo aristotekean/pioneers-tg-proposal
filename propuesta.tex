@@ -34,7 +34,7 @@
 \maketitle
 
 \begin{abstract}
-Se propone construir y evaluar un gemelo digital urbano de la localidad de Chapinero, Bogotá, para estimar pérdidas económicas directas por inundación pluvial y apoyar la gestión del riesgo. El prototipo integrará una representación urbana, un modelo hidrodinámico, inteligencia artificial y funciones de daño. La arquitectura de cinco capas organiza el sistema y Medallion gestiona la trazabilidad de los datos. La revisión crítica de siete fuentes identifica aportes y límites en representación, amenaza, vulnerabilidad y valoración. La evaluación distinguirá fidelidad al simulador y validez frente a observaciones, e incluirá precisión, costo computacional e incertidumbre. El alcance inicial corresponde a simulaciones por escenario con datos versionados, sin operación en tiempo real.
+Se propone construir y evaluar un gemelo digital urbano de la localidad de Chapinero, Bogotá, para estimar pérdidas económicas directas por inundación pluvial y apoyar la gestión del riesgo. El prototipo integrará una representación urbana, un modelo hidrodinámico, inteligencia artificial y funciones de daño. La arquitectura de cinco capas organiza el sistema y Medallion gestiona la trazabilidad de los datos. La revisión crítica de dieciséis fuentes identifica aportes y límites en representación, amenaza, vulnerabilidad y valoración. La evaluación distinguirá fidelidad al simulador y validez frente a observaciones, e incluirá precisión, costo computacional e incertidumbre. El alcance inicial corresponde a simulaciones por escenario con datos versionados, sin operación en tiempo real.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -43,7 +43,7 @@ gemelo digital urbano, gestión del riesgo, inundación pluvial, inteligencia ar
 
 \section{Estado del arte y lectura crítica}
 
-\IEEEPARstart{L}{a} evaluación de pérdidas por inundación requiere conectar amenaza, exposición, vulnerabilidad y valor económico. Se seleccionaron siete artículos de la biblioteca por su pertinencia para esa cadena, detalle metodológico, evidencia de evaluación y posibilidad de reutilización. La selección es temática y metodológica. Los estudios de otras amenazas se incluyen por sus métodos transferibles, no por equivalencia entre sus parámetros físicos.
+\IEEEPARstart{L}{a} evaluación de pérdidas por inundación requiere conectar amenaza, exposición, vulnerabilidad y valor económico. Se seleccionaron dieciséis fuentes por su pertinencia para esa cadena, detalle metodológico, evidencia de evaluación y posibilidad de reutilización. La selección es temática y metodológica. Los estudios de otras amenazas se incluyen por sus métodos transferibles, no por equivalencia entre sus parámetros físicos.
 
 Yu et al.~\cite{yu2023}, vinculados con la Earthquake Agency de Ningxia, la China Earthquake Administration y Nanjing Normal University, integran fotogrametría, LiDAR y respuesta estructural para representar daños sísmicos en Pingluo, China. La vinculación entre edificios y daño orienta la representación urbana propuesta. No obstante, su índice de daño y la ecuación estructural no equivalen a pérdidas monetarias. La lectura crítica de la sección 3.2 y las figuras 7 y 8 impide confundir visualización de daño con valoración económica.
 
@@ -55,7 +55,13 @@ Zhu~\cite{zhu2024}, de Nanjing University of Information Science and Technology,
 
 Lohmann y Yue~\cite{lohmann2011}, de Risk Management Solutions, describen un modelo de catástrofes en cuatro módulos (estocástico, amenaza, vulnerabilidad y financiero) y representan la pérdida de cada bien expuesto como una distribución alrededor de la razón media de daño, muestreada con Monte Carlo. Su aplicación a tifones e inundación en China opera a escala de cartera aseguradora y no reporta validación con pérdidas observadas. Su aporte es el tratamiento de la incertidumbre de la pérdida, no parámetros transferibles a Chapinero.
 
-La oportunidad consiste en integrar y evaluar estos componentes con trazabilidad entre datos, inundación, daño y pérdida. No se concluye que no existan soluciones integradoras. La pregunta que surge de esta síntesis, formulada en la Sección~\ref{sec:pregunta}, incorpora tres dimensiones de evaluación: precisión, costo computacional e incertidumbre.
+Bentivoglio et al.~\cite{bentivoglio2022}, de Delft University of Technology, revisan 58 trabajos de aprendizaje profundo para mapas de inundación. Señalan que la profundidad se evalúa con métricas de regresión y la extensión con métricas de clasificación, que el tiempo de entrenamiento debe contarse al comparar velocidades y que todos los modelos revisados son deterministas. Seleem et al.~\cite{seleem2023}, de la Universidad de Potsdam, comparan un bosque aleatorio con una red U-Net para profundidad pluvial en Berlín: el modelo sencillo supera a la red dentro del dominio de entrenamiento y pierde desempeño fuera de él. Cache et al.~\cite{cache2024}, de la Universidad de Lausana, reservan eventos de lluvia completos para prueba y muestran que, en terreno no visto, el modelo reproduce los patrones espaciales pero no la magnitud de la profundidad. Ninguno de los dos estudios incluye la red de drenaje en sus simulaciones, y sus resultados dependen de la calidad del simulador que emulan.
+
+Huizinga et al.~\cite{huizinga2017}, en un informe técnico del Joint Research Centre, proponen funciones globales de daño por profundidad; la curva residencial para Sudamérica procede de funciones de Brasil, St.~Maarten y México, y no distingue el tipo de inundación. Jongman et al.~\cite{jongman2012}, de VU University Amsterdam, comparan siete modelos de daño frente a pérdidas reportadas en dos inundaciones fluviales y concluyen que la incertidumbre de las funciones de daño pesa más que la de los valores expuestos, con mayor dispersión relativa a profundidades bajas. Gerl et al.~\cite{gerl2016}, del GFZ de Potsdam, inventarían 47 modelos de pérdida: el 96~\% son deterministas, el 45~\% se validó con pérdidas observadas y el 2~\% corresponde a Centro y Sudamérica, cifra que los autores asocian en parte al sesgo de idioma de su búsqueda. Ninguna de estas fuentes aporta funciones específicas para inundación pluvial ni para Colombia.
+
+Contreras-Bejarano y Villegas-González~\cite{contreras2019}, de la Universidad Católica de Colombia, modelan en SWMM el alcantarillado pluvial entre las calles 94 y 106 de Chapinero con planos y coeficientes IDF de la EAAB. Cuantifican la inundación en pozos, sin profundidad en superficie, calibración ni daño económico. Mandal et al.~\cite{mandal2026}, de Texas A\&M University, presentan un gemelo digital geoespacial de Galveston que acopla un modelo 1D-2D y simula tormentas de 2 a 100 años de periodo de retorno; reportan edificaciones inundadas por clase de profundidad, sin pérdidas monetarias, y validan de forma cualitativa. Abdelrahman et al.~\cite{abdelrahman2025}, de la National University of Singapore, derivan definiciones de gemelo digital a partir de más de 15\,000 publicaciones: ubican los gemelos urbanos como apoyo a decisiones de largo plazo y consideran no esenciales el tiempo real y el flujo bidireccional, aunque su definición de gemelo urbano incluye sensores IoT.
+
+La oportunidad consiste en integrar y evaluar estos componentes con trazabilidad entre datos, inundación, daño y pérdida, y en llevar la estimación hasta la pérdida monetaria por edificación en un contexto pluvial y local poco representado en la literatura. No se concluye que no existan soluciones integradoras. La pregunta que surge de esta síntesis, formulada en la Sección~\ref{sec:pregunta}, incorpora tres dimensiones de evaluación: precisión, costo computacional e incertidumbre.
 
 \section{Pregunta de investigación y objetivos}
 \label{sec:pregunta}
@@ -194,7 +200,7 @@ La transcripción «seguimiento seminario de investigación .vtt», aportada por
 
 Los pasajes se sintetizan por contexto para no reproducir errores del reconocimiento automático. Las explicaciones de Kevin sobre Medallion y las capas se distinguen de las recomendaciones del tutor. La revisión final solicitada por Andrés permanece pendiente y no se presume realizada.
 
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{yu2023}
 S.~Yu, Q.~Lei, C.~Liu, N.~Zhang, S.~Shan y X.~Zeng, ``Application research on digital twins of urban earthquake disasters,'' \emph{Geomatics, Natural Hazards and Risk}, vol.~14, n.\textordmasculine~1, art.~2278274, 2023. \href{https://doi.org/10.1080/19475705.2023.2278274}{doi: 10.1080/19475705.2023.2278274}.
@@ -216,6 +222,33 @@ C.~Lan y Z.~Wang, ``Risk Assessment and Pricing Model of Natural Disaster Insura
 
 \bibitem{lohmann2011}
 D.~Lohmann y F.~Yue, ``Correlation, simulation and uncertainty in catastrophe modeling,'' en \emph{Proceedings of the 2011 Winter Simulation Conference (WSC)}, pp.~133--145, 2011.
+
+\bibitem{bentivoglio2022}
+R.~Bentivoglio, E.~Isufi, S.~N.~Jonkman y R.~Taormina, ``Deep learning methods for flood mapping: a review of existing applications and future research directions,'' \emph{Hydrology and Earth System Sciences}, vol.~26, pp.~4345--4378, 2022. \href{https://doi.org/10.5194/hess-26-4345-2022}{doi: 10.5194/hess-26-4345-2022}.
+
+\bibitem{seleem2023}
+O.~Seleem, G.~Ayzel, A.~Bronstert y M.~Heistermann, ``Transferability of data-driven models to predict urban pluvial flood water depth in Berlin, Germany,'' \emph{Natural Hazards and Earth System Sciences}, vol.~23, pp.~809--822, 2023. \href{https://doi.org/10.5194/nhess-23-809-2023}{doi: 10.5194/nhess-23-809-2023}.
+
+\bibitem{cache2024}
+T.~Cache, M.~S.~Gomez, T.~Beucler, J.~Blagojevic, J.~P.~Leitao y N.~Peleg, ``Enhancing generalizability of data-driven urban flood models by incorporating contextual information,'' \emph{Hydrology and Earth System Sciences}, vol.~28, pp.~5443--5458, 2024. \href{https://doi.org/10.5194/hess-28-5443-2024}{doi: 10.5194/hess-28-5443-2024}.
+
+\bibitem{huizinga2017}
+J.~Huizinga, H.~de~Moel y W.~Szewczyk, ``Global flood depth-damage functions: Methodology and the database with guidelines,'' Joint Research Centre, Publications Office of the European Union, Luxemburgo, Inf. téc. EUR 28552 EN, 2017. \href{https://doi.org/10.2760/16510}{doi: 10.2760/16510}.
+
+\bibitem{jongman2012}
+B.~Jongman \emph{et al.}, ``Comparative flood damage model assessment: towards a European approach,'' \emph{Natural Hazards and Earth System Sciences}, vol.~12, pp.~3733--3752, 2012. \href{https://doi.org/10.5194/nhess-12-3733-2012}{doi: 10.5194/nhess-12-3733-2012}.
+
+\bibitem{gerl2016}
+T.~Gerl, H.~Kreibich, G.~Franco, D.~Marechal y K.~Schröter, ``A Review of Flood Loss Models as Basis for Harmonization and Benchmarking,'' \emph{PLoS ONE}, vol.~11, n.\textordmasculine~7, art.~e0159791, 2016. \href{https://doi.org/10.1371/journal.pone.0159791}{doi: 10.1371/journal.pone.0159791}.
+
+\bibitem{contreras2019}
+O.~Contreras-Bejarano y P.~A.~Villegas-González, ``Techos verdes para la gestión integral del agua: caso de estudio Chapinero, Colombia,'' \emph{Tecnología y ciencias del agua}, vol.~10, n.\textordmasculine~5, pp.~282--318, 2019. \href{https://doi.org/10.24850/j-tyca-2019-05-11}{doi: 10.24850/j-tyca-2019-05-11}.
+
+\bibitem{mandal2026}
+D.~Mandal \emph{et al.}, ``FlowsDT: A geospatial digital twin for navigating urban flood dynamics,'' \emph{Computers, Environment and Urban Systems}, vol.~126, art.~102414, 2026. \href{https://doi.org/10.1016/j.compenvurbsys.2026.102414}{doi: 10.1016/j.compenvurbsys.2026.102414}. Versión consultada: preprint arXiv:2507.08850v1.
+
+\bibitem{abdelrahman2025}
+M.~Abdelrahman, E.~Macatulad, B.~Lei, M.~Quintana, C.~Miller y F.~Biljecki, ``What is a Digital Twin Anyway? Deriving the Definition for the Built Environment from over 15,000 Scientific Publications,'' \emph{Building and Environment}, vol.~274, art.~112748, 2025. \href{https://doi.org/10.1016/j.buildenv.2025.112748}{doi: 10.1016/j.buildenv.2025.112748}.
 
 \bibitem{xu2024}
 H.~Xu, F.~Omitaomu, S.~Sabri, S.~Zlatanova, X.~Li y Y.~Song, ``Leveraging Generative AI for Urban Digital Twins: A Scoping Review on the Autonomous Generation of Urban Data, Scenarios, Designs, and 3D City Models for Smart City Advancement,'' arXiv:2405.19464v2 [cs.AI], 2024. \href{https://doi.org/10.48550/arXiv.2405.19464}{doi: 10.48550/arXiv.2405.19464}.
