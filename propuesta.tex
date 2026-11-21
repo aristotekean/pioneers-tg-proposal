@@ -11,7 +11,6 @@
 \usetikzlibrary{positioning,arrows.meta}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
-
 \addto\captionsspanish{\renewcommand{\IEEEkeywordsname}{Palabras clave}}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 
@@ -36,6 +35,14 @@
 \begin{abstract}
 Se propone construir y evaluar un gemelo digital urbano de la localidad de Chapinero, Bogotá, para estimar pérdidas económicas directas por inundación pluvial y apoyar la gestión del riesgo. El prototipo integrará una representación urbana, un modelo hidrodinámico, inteligencia artificial y funciones de daño. La arquitectura de cinco capas organiza el sistema y Medallion gestiona la trazabilidad de los datos. La revisión crítica de dieciséis fuentes identifica aportes y límites en representación, amenaza, vulnerabilidad y valoración. La evaluación distinguirá fidelidad al simulador y validez frente a observaciones, e incluirá precisión, costo computacional e incertidumbre. El alcance inicial corresponde a simulaciones por escenario con datos versionados, sin operación en tiempo real.
 \end{abstract}
+
+% Impact Statement required by IEEE TAI; reuses the keywords block styling
+\begingroup
+\renewcommand{\IEEEkeywordsname}{Declaración de impacto}
+\begin{IEEEkeywords}
+Las inundaciones por lluvia intensa dañan edificaciones en zonas urbanas, y gestionar ese riesgo requiere saber dónde y cuánto se perdería en cada escenario. Esta propuesta plantea un gemelo digital urbano de la localidad de Chapinero, Bogotá, que encadena simulación hidrodinámica, modelos de inteligencia artificial y funciones de daño para producir esas estimaciones por edificación, con trazabilidad de cada resultado hasta los datos y parámetros que lo originan. La inteligencia artificial permite consultar escenarios sin ejecutar de nuevo el simulador. La evaluación reportará precisión, costo computacional e incertidumbre, y separará la fidelidad al simulador de la validez frente a observaciones. El resultado esperado es un prototipo que apoye la gestión del riesgo; no constituye un sistema de alerta temprana ni opera en tiempo real.
+\end{IEEEkeywords}
+\endgroup
 
 \begin{IEEEkeywords}
 gemelo digital urbano, gestión del riesgo, inundación pluvial, inteligencia artificial, pérdidas económicas, Medallion.
@@ -87,6 +94,26 @@ Construir y evaluar un gemelo digital urbano de la localidad de Chapinero que in
 \section{Aproximación metodológica}
 
 \subsection{Alcance y condiciones de aplicación}
+
+\begin{table*}[!t]
+\renewcommand{\arraystretch}{1.3}
+\caption{Objetivos, actividades, tareas y entregables}
+\label{tab:objetivos}
+\centering
+\begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}p{2.6cm}|L|L|}
+\hline
+\textbf{Objetivo} & \textbf{Actividad} & \textbf{Tareas principales} & \textbf{Entregable y comprobación} \\
+\hline
+OE1 & Representación y base urbana & Inventariar topografía, drenaje, lluvia y edificaciones de toda la localidad. Registrar cobertura y vacíos. Armonizar unidades, coordenadas y cotas. Construir la representación 3D y definir contratos entre las cinco capas. & E1. Base geográfica versionada, representación urbana y diseño de arquitectura. Verificación de cobertura, procedencia y consistencia espacial. \\
+\hline
+OE2 & Modelación física y aprendizaje & Configurar y comprobar el simulador hidrodinámico. Generar escenarios. Organizar datos en bronce, plata y oro. Separar eventos de entrenamiento, validación y prueba. Comparar un predictor sencillo con al menos un candidato de IA. & E2. Modelos de IA, simulaciones de referencia y protocolo reproducible. Métricas en escenarios reservados, sin fuga de información. \\
+\hline
+OE3 & Integración y valoración & Conectar inferencias con edificios. Seleccionar y justificar funciones de daño y valores de reposición. Calcular pérdidas por escenario. Publicar mapas y consultas en la API y el visor 2D/3D. Probar el recorrido completo. & E3. Prototipo integrado y mapas de amenaza, daño y pérdida. Trazabilidad de cada resultado hasta datos, modelo y parámetros. \\
+\hline
+OE4 & Evaluación del sistema & Medir errores de profundidad y pérdidas, tiempo y memoria en el mismo equipo. Contrastar observaciones disponibles. Variar lluvia, rugosidad, funciones de daño y valores. Documentar fallos y límites de uso. & E4. Informe de evaluación, sensibilidad e incertidumbre. Separación explícita entre fidelidad al simulador y validez empírica. \\
+\hline
+\end{tabularx}
+\end{table*}
 
 El ámbito geográfico es la localidad de Chapinero, Bogotá. Se inventariará la cobertura de datos para toda la localidad y se registrarán las zonas sin información suficiente. Los ensayos podrán usar subdominios computacionales sin modificar el alcance geográfico ni presentar zonas no modeladas como validadas. La salida será por edificación o predio, según la calidad del inventario.
 
@@ -143,26 +170,6 @@ La arquitectura Medallion~\cite{strengholt2025} organiza la preparación de dato
 
 La secuencia separa la base urbana, el aprendizaje, la integración y la evaluación. Las actividades concretan los objetivos sin sustituirlos por una lista de operaciones.
 
-\begin{table*}[!t]
-\renewcommand{\arraystretch}{1.3}
-\caption{Objetivos, actividades, tareas y entregables}
-\label{tab:objetivos}
-\centering
-\begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}p{2.6cm}|L|L|}
-\hline
-\textbf{Objetivo} & \textbf{Actividad} & \textbf{Tareas principales} & \textbf{Entregable y comprobación} \\
-\hline
-OE1 & Representación y base urbana & Inventariar topografía, drenaje, lluvia y edificaciones de toda la localidad. Registrar cobertura y vacíos. Armonizar unidades, coordenadas y cotas. Construir la representación 3D y definir contratos entre las cinco capas. & E1. Base geográfica versionada, representación urbana y diseño de arquitectura. Verificación de cobertura, procedencia y consistencia espacial. \\
-\hline
-OE2 & Modelación física y aprendizaje & Configurar y comprobar el simulador hidrodinámico. Generar escenarios. Organizar datos en bronce, plata y oro. Separar eventos de entrenamiento, validación y prueba. Comparar un predictor sencillo con al menos un candidato de IA. & E2. Modelos de IA, simulaciones de referencia y protocolo reproducible. Métricas en escenarios reservados, sin fuga de información. \\
-\hline
-OE3 & Integración y valoración & Conectar inferencias con edificios. Seleccionar y justificar funciones de daño y valores de reposición. Calcular pérdidas por escenario. Publicar mapas y consultas en la API y el visor 2D/3D. Probar el recorrido completo. & E3. Prototipo integrado y mapas de amenaza, daño y pérdida. Trazabilidad de cada resultado hasta datos, modelo y parámetros. \\
-\hline
-OE4 & Evaluación del sistema & Medir errores de profundidad y pérdidas, tiempo y memoria en el mismo equipo. Contrastar observaciones disponibles. Variar lluvia, rugosidad, funciones de daño y valores. Documentar fallos y límites de uso. & E4. Informe de evaluación, sensibilidad e incertidumbre. Separación explícita entre fidelidad al simulador y validez empírica. \\
-\hline
-\end{tabularx}
-\end{table*}
-
 \subsection{Valoración y protocolo de evaluación}
 
 La pérdida por escenarios se calculará como
@@ -200,6 +207,8 @@ La transcripción «seguimiento seminario de investigación .vtt», aportada por
 
 Los pasajes se sintetizan por contexto para no reproducir errores del reconocimiento automático. Las explicaciones de Kevin sobre Medallion y las capas se distinguen de las recomendaciones del tutor. La revisión final solicitada por Andrés permanece pendiente y no se presume realizada.
 
+% Manual column break to balance the last page; revisit if the text length changes
+\newpage
 \begin{thebibliography}{10}
 
 \bibitem{yu2023}
