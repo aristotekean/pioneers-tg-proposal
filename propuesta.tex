@@ -34,7 +34,7 @@
 \maketitle
 
 \begin{abstract}
-Se propone construir y evaluar un gemelo digital urbano de la localidad de Chapinero, Bogotá, para estimar pérdidas económicas directas por inundación pluvial y apoyar la gestión del riesgo. El prototipo integrará una representación urbana, un modelo hidrodinámico, inteligencia artificial y funciones de daño. La arquitectura de cinco capas organiza el sistema y Medallion gestiona la trazabilidad de los datos. La revisión crítica de seis fuentes identifica aportes y límites en representación, amenaza, vulnerabilidad y valoración. La evaluación distinguirá fidelidad al simulador y validez frente a observaciones, e incluirá precisión, costo computacional e incertidumbre. El alcance inicial corresponde a simulaciones por escenario con datos versionados, sin operación en tiempo real.
+Se propone construir y evaluar un gemelo digital urbano de la localidad de Chapinero, Bogotá, para estimar pérdidas económicas directas por inundación pluvial y apoyar la gestión del riesgo. El prototipo integrará una representación urbana, un modelo hidrodinámico, inteligencia artificial y funciones de daño. La arquitectura de cinco capas organiza el sistema y Medallion gestiona la trazabilidad de los datos. La revisión crítica de siete fuentes identifica aportes y límites en representación, amenaza, vulnerabilidad y valoración. La evaluación distinguirá fidelidad al simulador y validez frente a observaciones, e incluirá precisión, costo computacional e incertidumbre. El alcance inicial corresponde a simulaciones por escenario con datos versionados, sin operación en tiempo real.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -43,7 +43,7 @@ gemelo digital urbano, gestión del riesgo, inundación pluvial, inteligencia ar
 
 \section{Estado del arte y lectura crítica}
 
-\IEEEPARstart{L}{a} evaluación de pérdidas por inundación requiere conectar amenaza, exposición, vulnerabilidad y valor económico. Se seleccionaron seis artículos de la biblioteca por su pertinencia para esa cadena, detalle metodológico, evidencia de evaluación y posibilidad de reutilización. La selección es temática y metodológica. Los estudios de otras amenazas se incluyen por sus métodos transferibles, no por equivalencia entre sus parámetros físicos.
+\IEEEPARstart{L}{a} evaluación de pérdidas por inundación requiere conectar amenaza, exposición, vulnerabilidad y valor económico. Se seleccionaron siete artículos de la biblioteca por su pertinencia para esa cadena, detalle metodológico, evidencia de evaluación y posibilidad de reutilización. La selección es temática y metodológica. Los estudios de otras amenazas se incluyen por sus métodos transferibles, no por equivalencia entre sus parámetros físicos.
 
 Yu et al.~\cite{yu2023}, vinculados con la Earthquake Agency de Ningxia, la China Earthquake Administration y Nanjing Normal University, integran fotogrametría, LiDAR y respuesta estructural para representar daños sísmicos en Pingluo, China. La vinculación entre edificios y daño orienta la representación urbana propuesta. No obstante, su índice de daño y la ecuación estructural no equivalen a pérdidas monetarias. La lectura crítica de la sección 3.2 y las figuras 7 y 8 impide confundir visualización de daño con valoración económica.
 
@@ -52,6 +52,8 @@ Sañudo et al.~\cite{sanudo2025}, de Universidade da Coruña/CITEEC y RWTH Aache
 Tascón-González et al.~\cite{tascon2024}, del grupo Q-GEO de la Universidad de León, estiman vulnerabilidad por parcela con datos abiertos en Ponferrada, España. El índice evidencia heterogeneidad espacial: el 22,7~\% de las parcelas supera 0,4. Sin embargo, es adimensional y corresponde a una rotura hipotética de presa. Su aporte es la integración parcelaria de información; no proporciona directamente una fracción monetaria de daño para lluvia urbana.
 
 Zhu~\cite{zhu2024}, de Nanjing University of Information Science and Technology, combina GAN-ALSTM, Monte Carlo y rentabilidad aseguradora para Estados Unidos y China. Lan y Wang~\cite{lan2024}, de Ocean University of China, relacionan pérdidas y factores de suscripción. Ambos aportan formulaciones financieras, pero la escala agregada y la documentación limitada de validación independiente restringen su transferencia a edificios de Chapinero. Sus resultados no justifican anticipar superioridad de una familia de IA ni precisión económica local.
+
+Lohmann y Yue~\cite{lohmann2011}, de Risk Management Solutions, describen un modelo de catástrofes en cuatro módulos (estocástico, amenaza, vulnerabilidad y financiero) y representan la pérdida de cada bien expuesto como una distribución alrededor de la razón media de daño, muestreada con Monte Carlo. Su aplicación a tifones e inundación en China opera a escala de cartera aseguradora y no reporta validación con pérdidas observadas. Su aporte es el tratamiento de la incertidumbre de la pérdida, no parámetros transferibles a Chapinero.
 
 La oportunidad consiste en integrar y evaluar estos componentes con trazabilidad entre datos, inundación, daño y pérdida. No se concluye que no existan soluciones integradoras. La pregunta que surge de esta síntesis, formulada en la Sección~\ref{sec:pregunta}, incorpora tres dimensiones de evaluación: precisión, costo computacional e incertidumbre.
 
@@ -166,7 +168,7 @@ donde $V_i$ es el valor de reposición y $d_{i,s}$ una fracción de daño entre 
 
 Se reservarán eventos o escenarios completos para prueba. Los conjuntos relacionados se agruparán para evitar que variantes casi idénticas contaminen entrenamiento y evaluación. El error de profundidad se medirá con MAE y RMSE; la pérdida se comparará por edificio y agregada. Se registrarán tiempos de entrenamiento e inferencia, memoria y características del equipo, distinguiendo el costo de generar simulaciones del costo de consulta.
 
-La incertidumbre se analizará variando lluvia, parámetros hidráulicos, funciones de daño y valores expuestos. Los intervalos serán condicionados a esos supuestos. Se contrastarán observaciones independientes cuando existan. Si faltan daños económicos observados, se reportará sensibilidad y coherencia respecto al modelo de referencia, sin afirmar exactitud monetaria empírica. Los criterios de aceptación se acordarán antes de evaluar el conjunto de prueba.
+La incertidumbre se analizará variando lluvia, parámetros hidráulicos, funciones de daño y valores expuestos. Los intervalos serán condicionados a esos supuestos. Se distinguirá la incertidumbre de la pérdida dado un escenario de la incertidumbre de parámetros y de modelo, según la clasificación de Lohmann y Yue~\cite{lohmann2011}. Se contrastarán observaciones independientes cuando existan. Si faltan daños económicos observados, se reportará sensibilidad y coherencia respecto al modelo de referencia, sin afirmar exactitud monetaria empírica. Los criterios de aceptación se acordarán antes de evaluar el conjunto de prueba.
 
 \section{Socialización y retroalimentación}
 
@@ -211,6 +213,9 @@ F.~Zhu, ``Forecasting Catastrophe: Integrating GAN-ALSTM and Monte Carlo Simulat
 
 \bibitem{lan2024}
 C.~Lan y Z.~Wang, ``Risk Assessment and Pricing Model of Natural Disaster Insurance Based on EVM-Topsis,'' en \emph{2024 International Conference on Data Science and Network Security (ICDSNS)}, pp.~1--7, 2024. \href{https://doi.org/10.1109/ICDSNS62112.2024.10690990}{doi: 10.1109/ICDSNS62112.2024.10690990}.
+
+\bibitem{lohmann2011}
+D.~Lohmann y F.~Yue, ``Correlation, simulation and uncertainty in catastrophe modeling,'' en \emph{Proceedings of the 2011 Winter Simulation Conference (WSC)}, pp.~133--145, 2011.
 
 \bibitem{xu2024}
 H.~Xu, F.~Omitaomu, S.~Sabri, S.~Zlatanova, X.~Li y Y.~Song, ``Leveraging Generative AI for Urban Digital Twins: A Scoping Review on the Autonomous Generation of Urban Data, Scenarios, Designs, and 3D City Models for Smart City Advancement,'' arXiv:2405.19464v2 [cs.AI], 2024. \href{https://doi.org/10.48550/arXiv.2405.19464}{doi: 10.48550/arXiv.2405.19464}.

@@ -11,3 +11,6 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+
+# Agent tooling
+.atl/
