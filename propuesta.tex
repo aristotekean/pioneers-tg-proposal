@@ -23,12 +23,12 @@
 
 \title{Gemelo digital urbano para la estimación espacial de pérdidas económicas por inundación pluvial en Chapinero, Bogotá, mediante modelos de IA}
 
-\author{Kevin~Andrey~Bueno~Solano y Diego~Alejandro~Cortes~Suarez%
-\thanks{Los autores pertenecen a la Pontificia Universidad Javeriana, Facultad de Ingeniería, Maestría en Inteligencia Artificial, Bogotá, Colombia.}%
-\thanks{Seminario de investigación. Profesor: Andrés Moreno Barbosa. Tutor y potencial director: Andrés Oswaldo Calderón Romero.}}
+\author{Kevin~Andrey~Bueno~Solano, Diego~Alejandro~Cortes~Suarez y Andrés~Oswaldo~Calderón~Romero~(tutor)%
+\thanks{K. A. Bueno Solano y D. A. Cortes Suarez son estudiantes de la Maestría en Inteligencia Artificial, Facultad de Ingeniería, Pontificia Universidad Javeriana, Bogotá, Colombia.}%
+\thanks{A. O. Calderón Romero es el tutor y potencial director del trabajo. Seminario de investigación. Profesor: Andrés Moreno Barbosa.}}
 
 \markboth{Seminario de investigación, Maestría en Inteligencia Artificial, Pontificia Universidad Javeriana}%
-{Bueno Solano y Cortes Suarez: Gemelo digital urbano para pérdidas por inundación pluvial en Chapinero}
+{Bueno Solano \emph{et al.}: Gemelo digital urbano para pérdidas por inundación pluvial en Chapinero}
 
 \maketitle
 
@@ -187,6 +187,57 @@ La incertidumbre se analizará variando lluvia, parámetros hidráulicos, funcio
 
 Las pérdidas por edificación son resultados condicionados a un escenario y a sus supuestos, no predicciones ni avalúos. Los mapas y consultas se publicarán junto con su incertidumbre y sus límites de uso, para evitar que una pérdida estimada se interprete como atributo del predio y estigmatice inmuebles o incida en avalúos, créditos o seguros. Se emplearán datos oficiales bajo sus condiciones de uso, sin tratar datos personales de propietarios u ocupantes, y se definirá el nivel de agregación espacial de los resultados que se publiquen. El prototipo apoya a quienes gestionan el riesgo y no sustituye su decisión. Las zonas sin información suficiente se señalarán como no modeladas, de modo que la ausencia de pérdida estimada no se lea como ausencia de riesgo.
 
+\subsection{Cronograma}
+
+El trabajo se ejecutará en un semestre académico de 17 semanas. La Tabla~\ref{tab:cronograma} distribuye las tareas de la Tabla~\ref{tab:objetivos} por semana; cada fase cierra con su entregable y con una reunión de seguimiento con el tutor. La partición de eventos y los criterios de aceptación se fijan en la semana 7, y el conjunto de prueba no se evalúa antes de la semana 14. Los datos oficiales que requieran trámite se solicitarán en la semana 1; si una fase se retrasa, se reducirá el subdominio computacional y no el protocolo de evaluación.
+
+\begin{table*}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Cronograma de ejecución en 17 semanas}
+\label{tab:cronograma}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{|c|c|L|>{\raggedright\arraybackslash}p{4.4cm}|}
+\hline
+\textbf{Semana} & \textbf{Objetivo} & \textbf{Tareas} & \textbf{Resultado} \\
+\hline
+1 & OE1 & Inventariar topografía, drenaje, lluvia y edificaciones. Solicitar datos oficiales. Crear la capa bronce con archivos originales y procedencia. & Inventario de fuentes con condiciones de uso \\
+\hline
+2 & OE1 & Registrar cobertura y vacíos por zona. Decidir si la salida será por edificación o por predio. & Mapa de cobertura y vacíos \\
+\hline
+3 & OE1 & Armonizar unidades, coordenadas y cotas en la capa plata. Registrar transformaciones, versiones y errores. & Capa plata validada \\
+\hline
+4 & OE1 & Construir la representación 3D (LoD1). Definir los contratos entre las cinco capas. Verificar consistencia espacial. & \textbf{E1} \\
+\hline
+5 & OE2 & Configurar el simulador hidrodinámico en un subdominio. Definir el diseño de escenarios de lluvia. & Simulador operativo en un subdominio \\
+\hline
+6 & OE2 & Comprobar el simulador. Iniciar la generación de escenarios y registrar el costo de cada simulación. & Simulador comprobado y primeras simulaciones \\
+\hline
+7 & OE2 & Completar los escenarios y organizarlos en la capa oro. Separar eventos de entrenamiento, validación y prueba. Acordar los criterios de aceptación. & Partición fijada y criterios de aceptación registrados \\
+\hline
+8 & OE2 & Entrenar el predictor sencillo de referencia. Medir MAE, RMSE y CSI en validación. & Línea base con métricas \\
+\hline
+9 & OE2 & Entrenar al menos un candidato de IA. Registrar tiempos, memoria y equipo. & Candidato de IA entrenado \\
+\hline
+10 & OE2 & Comparar la línea base y el candidato en validación. Seleccionar el modelo. Documentar el protocolo reproducible. & \textbf{E2} \\
+\hline
+11 & OE3 & Conectar las inferencias con los edificios. Seleccionar y justificar funciones de daño y valores de reposición. & Profundidad por edificación y parámetros de valoración \\
+\hline
+12 & OE3 & Calcular pérdidas por escenario. Publicar consultas en la API. Definir el nivel de agregación espacial de los resultados. & Pérdidas consultables por edificación y escenario \\
+\hline
+13 & OE3 & Publicar mapas en el visor 2D/3D con incertidumbre y límites de uso. Señalar zonas no modeladas. Probar el recorrido completo. & \textbf{E3} \\
+\hline
+14 & OE4 & Evaluar el conjunto de prueba: errores de profundidad y de pérdida. Medir tiempo y memoria en el mismo equipo. & Resultados de precisión y costo computacional \\
+\hline
+15 & OE4 & Variar lluvia, rugosidad, funciones de daño y valores expuestos. Contrastar las observaciones disponibles. & Análisis de sensibilidad e incertidumbre \\
+\hline
+16 & OE4 & Redactar el informe de evaluación. Documentar fallos y límites de uso. & \textbf{E4} \\
+\hline
+17 & Todos & Integrar los resultados en el documento final. Congelar versiones de datos, modelos y parámetros. Socializar con el tutor. & Documento final y prototipo versionado \\
+\hline
+\end{tabularx}
+\end{table*}
+
 \section{Socialización y retroalimentación}
 
 La transcripción «seguimiento seminario de investigación .vtt», aportada por Diego, documenta la revisión de Andrés Oswaldo Calderón Romero con Kevin Andrey Bueno Solano y Diego Alejandro Cortes Suarez. El archivo contiene marcas relativas hasta aproximadamente 19~min 36~s, pero no identifica de forma explícita la fecha de la reunión. Constituye evidencia del intercambio, no una aprobación final de esta versión.
@@ -253,6 +304,8 @@ J.~Huizinga, H.~de~Moel y W.~Szewczyk, ``Global flood depth-damage functions: Me
 \bibitem{jongman2012}
 B.~Jongman \emph{et al.}, ``Comparative flood damage model assessment: towards a European approach,'' \emph{Natural Hazards and Earth System Sciences}, vol.~12, pp.~3733--3752, 2012. \href{https://doi.org/10.5194/nhess-12-3733-2012}{doi: 10.5194/nhess-12-3733-2012}.
 
+% Manual column break to balance the last page; revisit if the text length changes
+\newpage
 \bibitem{gerl2016}
 T.~Gerl, H.~Kreibich, G.~Franco, D.~Marechal y K.~Schröter, ``A Review of Flood Loss Models as Basis for Harmonization and Benchmarking,'' \emph{PLoS ONE}, vol.~11, n.\textordmasculine~7, art.~e0159791, 2016. \href{https://doi.org/10.1371/journal.pone.0159791}{doi: 10.1371/journal.pone.0159791}.
 
@@ -262,8 +315,6 @@ O.~Contreras-Bejarano y P.~A.~Villegas-González, ``Techos verdes para la gesti�
 \bibitem{mandal2026}
 D.~Mandal \emph{et al.}, ``FlowsDT: A geospatial digital twin for navigating urban flood dynamics,'' \emph{Computers, Environment and Urban Systems}, vol.~126, art.~102414, 2026. \href{https://doi.org/10.1016/j.compenvurbsys.2026.102414}{doi: 10.1016/j.compenvurbsys.2026.102414}. Versión consultada: preprint arXiv:2507.08850v1.
 
-% Manual column break to balance the last page; revisit if the text length changes
-\newpage
 \bibitem{abdelrahman2025}
 M.~Abdelrahman, E.~Macatulad, B.~Lei, M.~Quintana, C.~Miller y F.~Biljecki, ``What is a Digital Twin Anyway? Deriving the Definition for the Built Environment from over 15,000 Scientific Publications,'' \emph{Building and Environment}, vol.~274, art.~112748, 2025. \href{https://doi.org/10.1016/j.buildenv.2025.112748}{doi: 10.1016/j.buildenv.2025.112748}.
 
